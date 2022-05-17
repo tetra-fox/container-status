@@ -11,7 +11,7 @@ services:
   container-status:
     image: "ghcr.io/tetra-fox/container-status:latest"
     ports:
-      - "3621:80"
+      - "3621:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 ```

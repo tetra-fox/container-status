@@ -27,7 +27,7 @@ func main() {
 	router.GET("/", listContainers)
 	router.GET("/:name", getContainerByName)
 
-	router.Run("localhost:80")
+	router.Run();
 }
 
 func getContainers() ([]byte, error) {

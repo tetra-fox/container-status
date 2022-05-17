@@ -12,6 +12,6 @@ COPY *.go ./
 
 RUN go build -o /container-status
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD [ "/container-status" ]
