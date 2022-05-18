@@ -2,13 +2,16 @@
 
 A simple API that returns the status of all running Docker containers.
 
-# Example docker-compose
+You can see a live instance of this [here](https://home.tetra.cool/status)!
+
+# docker-compose example
 
 ```yaml
-version: "3"
+version: "3.7"
 
 services:
   container-status:
+    container_name: status
     image: "ghcr.io/tetra-fox/container-status:latest"
     ports:
       - "3621:8080"
