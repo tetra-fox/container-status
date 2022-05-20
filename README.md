@@ -1,4 +1,4 @@
-# container-status
+# container-status ![](https://img.shields.io/github/workflow/status/tetra-fox/container-status/Build%20image%20&%20push%20to%20GitHub%20Container%20Registry?style=flat-square)
 
 A tiny API written in Go that returns metadata of all Docker containers.
 
