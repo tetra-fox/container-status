@@ -26,4 +26,4 @@ services:
 | Method | Endpoint       | Description                                                           |
 | ------ | -------------- | --------------------------------------------------------------------- |
 | GET    | /              | Returns the metadata of all containers.                               |
-| GET    | /{name},{name} | Returns the metadata of the specified container(s). (comma-separated) |
+| GET    | /{name(s)} | Returns the metadata of the specified container(s). (comma-separated) |
