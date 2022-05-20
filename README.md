@@ -2,9 +2,9 @@
 
 A tiny API written in Go that returns metadata of all Docker containers.
 
-I created this because I wanted a simple way to display the status of the various services that run my home network without displaying sensitive information (such as my network configuration, volume bindings or entrypoint arguments).
+I created this because I wanted a simple way to get the status of the various services that run my home network without returning sensitive information (such as my network configuration, volume bindings or entrypoint arguments).
 
-You can see a live instance of this [here](https://home.tetra.cool/status)!
+You can see a live instance of this [here](https://home.tetra.cool/status), and in use [here](https://home.tetra.cool)!
 
 # docker-compose example
 
