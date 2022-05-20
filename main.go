@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 	"time"
+	"golang.org/x/exp/slices"
 
 	"github.com/gin-gonic/gin"
 
@@ -13,8 +15,13 @@ import (
 )
 
 type responseContainer struct {
-	Name   string `json:"name"`
+	ID string `json:"id"`
+	PrimaryName string `json:"name"`
+	Names   []string `json:"names"`
+	State string `json:"state"`
 	Status string `json:"status"`
+	Image string `json:"image"`
+	ImageHash string `json:"image_hash"`
 }
 
 type response struct {
@@ -25,12 +32,13 @@ type response struct {
 func main() {
 	router := gin.Default()
 	router.GET("/", listContainers)
-	router.GET("/:name", getContainerByName)
+	router.GET("/:names", listContainersByName)
 
 	router.Run();
 }
 
-func getContainers() ([]byte, error) {
+// Helpers
+func getContainers() ([]responseContainer, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
@@ -42,52 +50,68 @@ func getContainers() ([]byte, error) {
 		return nil, err;
 	}
 
-	sanitizedContainers := make([]responseContainer, len(containers))
+	output := make([]responseContainer, len(containers))
 	for i, container := range containers {
-		sanitizedContainers[i] = responseContainer{container.Names[0][1:], container.State}
+		output[i] = responseContainer{
+			ID:        container.ID,
+			State:     container.State,
+			Status:    container.Status,
+			Image:     container.Image,
+			ImageHash: container.ImageID[7:],
+		}
+		for _, name := range container.Names {
+			output[i].Names = append(output[i].Names, strings.TrimPrefix(name, "/"))
+		}
+		output[i].PrimaryName = output[i].Names[0]
 	}
 
-	responseJson, err := json.Marshal(response{sanitizedContainers, time.Now().UnixMilli()})
-	if err != nil {
-		return nil, err;
-	}
-
-	return responseJson, nil;
+	return output, nil;
 }
 
+func containersToJson(containers []responseContainer) ([]byte, error) {
+	return json.Marshal(response{Containers: containers, Time: time.Now().UnixMilli()})
+}
+
+// Routes
 func listContainers(c *gin.Context) {
-	responseJson, err := getContainers()
+	containers, err := getContainers()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	responseJson, err := containersToJson(containers);
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.Data(http.StatusOK, gin.MIMEJSON, responseJson)
 }
 
-func getContainerByName(c *gin.Context) {
-	responseJson, err := getContainers()
+func listContainersByName(c *gin.Context) {
+	names := strings.Split(c.Param("names"), ",")	
+
+	containers, err := getContainers()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	var containers response
-	err = json.Unmarshal(responseJson, &containers)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	for _, container := range containers.Containers {
-		if container.Name == c.Param("name") {
-			responseJson, err := json.Marshal(response{[]responseContainer{container}, time.Now().UnixMilli()})
-			if err != nil {
-				panic(err)
+	filteredContainers := make([]responseContainer, 0)
+	for _, container := range containers {
+		for _, name := range names {
+			if slices.Contains(container.Names, name) { 
+				filteredContainers = append(filteredContainers, container)
 			}
-			c.Data(http.StatusOK, gin.MIMEJSON, responseJson)
-			return
 		}
 	}
 
-	c.JSON(http.StatusNotFound, gin.H{"error": "container not found"})
+	responseJson, err := containersToJson(filteredContainers);
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Data(http.StatusOK, gin.MIMEJSON, responseJson)
 }
