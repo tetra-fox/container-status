@@ -1,3 +1,5 @@
+name: Build image & push to GitHub Container Registry
+
 on:
   release:
     types: [published]
