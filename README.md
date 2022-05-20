@@ -6,7 +6,7 @@ I created this because I wanted a simple way to get the status of the various se
 
 You can see a live instance of this [here](https://home.tetra.cool/status), and in use [here](https://home.tetra.cool)!
 
-# docker-compose example
+### docker-compose example
 
 ```yaml
 version: "3.7"
@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # So we can get information from Docker!
 ```
 
-# Endpoints
+### Endpoints
 
 | Method | Endpoint       | Description                                                           |
 | ------ | -------------- | --------------------------------------------------------------------- |
