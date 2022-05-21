@@ -1,4 +1,4 @@
-# container-status ![](https://img.shields.io/github/workflow/status/tetra-fox/container-status/Build%20image%20&%20push%20to%20GitHub%20Container%20Registry?style=flat-square)
+# container-info ![](https://img.shields.io/github/workflow/status/tetra-fox/container-info/Build%20image%20&%20push%20to%20GitHub%20Container%20Registry?style=flat-square)
 
 A tiny API written in Go that returns metadata of all Docker containers.
 
@@ -12,9 +12,9 @@ You can see a live instance of this [here](https://home.tetra.cool/status), and 
 version: "3.7"
 
 services:
-  container-status:
+  container-info:
     container_name: status
-    image: "ghcr.io/tetra-fox/container-status:latest"
+    image: "ghcr.io/tetra-fox/container-info:latest"
     ports:
       - "3621:8080"
     volumes:

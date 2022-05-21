@@ -1,4 +1,4 @@
-module github.com/tetra-fox/container-status
+module github.com/tetra-fox/container-info
 
 go 1.18
 

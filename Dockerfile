@@ -10,8 +10,8 @@ RUN go mod download
 
 COPY *.go ./
 
-RUN go build -o /container-status
+RUN go build -o /container-info
 
 EXPOSE 8080
 
-CMD [ "/container-status" ]
+CMD [ "/container-info" ]
