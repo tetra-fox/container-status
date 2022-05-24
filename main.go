@@ -3,38 +3,37 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"golang.org/x/exp/slices"
 	"net/http"
 	"strings"
 	"time"
-	"golang.org/x/exp/slices"
 
 	"github.com/gin-gonic/gin"
-
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 )
 
 type responseContainer struct {
-	ID string `json:"id"`
-	PrimaryName string `json:"name"`
-	Names   []string `json:"names"`
-	State string `json:"state"`
-	Status string `json:"status"`
-	Image string `json:"image"`
-	ImageHash string `json:"image_hash"`
+	ID          string   `json:"id"`
+	PrimaryName string   `json:"name"`
+	Names       []string `json:"names"`
+	State       string   `json:"state"`
+	Status      string   `json:"status"`
+	Image       string   `json:"image"`
+	ImageHash   string   `json:"image_hash"`
 }
 
 type response struct {
 	Containers []responseContainer `json:"containers"`
-	Time       int64 `json:"time"`
+	Time       int64               `json:"time"`
 }
 
 func main() {
 	router := gin.Default()
 	router.GET("/", listContainers)
-	router.GET("/:names", listContainersByName)
+	router.GET("/:names", listContainers)
 
-	router.Run();
+	router.Run()
 }
 
 // Helpers
@@ -42,12 +41,12 @@ func getContainers() ([]responseContainer, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		return nil, err;
+		return nil, err
 	}
 
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{All: true})
 	if err != nil {
-		return nil, err;
+		return nil, err
 	}
 
 	output := make([]responseContainer, len(containers))
@@ -65,7 +64,7 @@ func getContainers() ([]responseContainer, error) {
 		output[i].PrimaryName = output[i].Names[0]
 	}
 
-	return output, nil;
+	return output, nil
 }
 
 func containersToJson(containers []responseContainer) ([]byte, error) {
@@ -80,34 +79,20 @@ func listContainers(c *gin.Context) {
 		return
 	}
 
-	responseJson, err := containersToJson(containers);
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.Data(http.StatusOK, gin.MIMEJSON, responseJson)
-}
-
-func listContainersByName(c *gin.Context) {
-	names := strings.Split(c.Param("names"), ",")	
-
-	containers, err := getContainers()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	filteredContainers := make([]responseContainer, 0)
-	for _, container := range containers {
-		for _, name := range names {
-			if slices.Contains(container.Names, name) { 
-				filteredContainers = append(filteredContainers, container)
+	if c.Param("names") != "" {
+		names := strings.Split(c.Param("names"), ",")
+		filteredContainers := make([]responseContainer, 0)
+		for _, container := range containers {
+			for _, name := range names {
+				if slices.Contains(container.Names, name) {
+					filteredContainers = append(filteredContainers, container)
+				}
 			}
 		}
+		containers = filteredContainers
 	}
 
-	responseJson, err := containersToJson(filteredContainers);
+	responseJson, err := containersToJson(containers)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
