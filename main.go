@@ -3,14 +3,15 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"golang.org/x/exp/slices"
 	"net/http"
 	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"golang.org/x/exp/slices"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/gin-gonic/gin"
 )
 
 type responseContainer struct {
@@ -36,7 +37,6 @@ func main() {
 	router.Run()
 }
 
-// Helpers
 func getContainers() ([]responseContainer, error) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
@@ -67,11 +67,6 @@ func getContainers() ([]responseContainer, error) {
 	return output, nil
 }
 
-func containersToJson(containers []responseContainer) ([]byte, error) {
-	return json.Marshal(response{Containers: containers, Time: time.Now().UnixMilli()})
-}
-
-// Routes
 func listContainers(c *gin.Context) {
 	containers, err := getContainers()
 	if err != nil {
@@ -92,7 +87,7 @@ func listContainers(c *gin.Context) {
 		containers = filteredContainers
 	}
 
-	responseJson, err := containersToJson(containers)
+	responseJson, err := json.Marshal(response{containers, time.Now().UnixMilli()})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
