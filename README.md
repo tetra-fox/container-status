@@ -1,6 +1,6 @@
 # container-info ![](https://img.shields.io/github/workflow/status/tetra-fox/container-info/Build%20image%20&%20push%20to%20GitHub%20Container%20Registry?style=flat-square)
 
-A tiny API written in Go that returns metadata of all Docker containers.
+A tiny Golang API that returns metadata of all Docker containers.
 
 I created this because I wanted a simple way to get the status of the various services that run my home network without returning sensitive information (such as my network configuration, volume bindings or entrypoint arguments).
 
