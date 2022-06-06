@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/docker/docker v20.10.16+incompatible
-	github.com/gin-gonic/gin v1.8.0
+	github.com/gin-gonic/gin v1.8.1
 	golang.org/x/exp v0.0.0-20220518171630-0b5c67f07fdf
 )
 
