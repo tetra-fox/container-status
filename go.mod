@@ -3,7 +3,7 @@ module github.com/tetra-fox/container-info
 go 1.18
 
 require (
-	github.com/docker/docker v20.10.17+incompatible
+	github.com/docker/docker v20.10.18+incompatible
 	github.com/gin-gonic/gin v1.8.1
 	golang.org/x/exp v0.0.0-20220518171630-0b5c67f07fdf
 )
