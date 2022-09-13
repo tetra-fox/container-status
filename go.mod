@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/docker/docker v20.10.17+incompatible
 	github.com/gin-gonic/gin v1.8.1
-	golang.org/x/exp v0.0.0-20220518171630-0b5c67f07fdf
+	golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561
 )
 
 require (
@@ -34,7 +34,7 @@ require (
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
