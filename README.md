@@ -1,4 +1,4 @@
-# container-info ![](https://img.shields.io/github/actions/workflow/status/tetra-fox/container-info/build.yml?branch=main&style=flat-square)
+# container-info ![](https://img.shields.io/github/actions/workflow/status/tetra-fox/container-info/docker.yml?branch=main&style=flat-square)
 
 A tiny Golang API that returns metadata of all Docker containers.
 
