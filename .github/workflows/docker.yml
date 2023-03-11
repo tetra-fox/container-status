@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Set SHOULD_PUSH to true
-        if: "contains(github.ref, 'main')"
+        if: "(github.event_name == 'push' && contains(github.ref, 'main'))"
         run: echo "SHOULD_PUSH=true" >> $GITHUB_ENV
           
       - name: Checkout
