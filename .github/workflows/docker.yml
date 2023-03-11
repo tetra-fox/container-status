@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Set SHOULD_PUSH to true
-        if: "contains(github.ref, 'main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push == true)"
+        if: "contains(github.ref, 'main')"
         run: echo "SHOULD_PUSH=true" >> $GITHUB_ENV
           
       - name: Checkout
