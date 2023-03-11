@@ -2,6 +2,11 @@ name: Build image
 
 on:
   push:
+    paths:
+      - "**.mod"
+      - "**.sum"
+      - "**.go"
+      - "Dockerfile"
   release:
     types: [published]
   workflow_dispatch:
@@ -19,7 +24,7 @@ jobs:
 
     steps:
       - name: Set SHOULD_PUSH to true
-        if: "contains(github.ref, 'main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push)"
+        if: "contains(github.ref, 'main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push == true)"
         run: echo "SHOULD_PUSH=true" >> $GITHUB_ENV
           
       - name: Checkout
