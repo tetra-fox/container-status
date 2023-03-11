@@ -1,18 +1,27 @@
-name: Build image & push to GitHub Container Registry
+name: Build image
 
 on:
   push:
-    branches:
-      - main
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      should_push:
+        type: boolean
+        description: Push image to registries
+        required: true
 
 jobs:
   build:
+    env:
+      SHOULD_PUSH: false
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set SHOULD_PUSH to true
+        if: "contains(github.ref, 'main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push)"
+        run: echo "SHOULD_PUSH=true" >> $GITHUB_ENV
+          
       - name: Checkout
         uses: actions/checkout@v3.3.0
 
@@ -38,7 +47,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v4.0.0
         with:
-          push: true
+          push: ${{ env.SHOULD_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           context: .
           tags: ${{ steps.meta.outputs.tags }}
