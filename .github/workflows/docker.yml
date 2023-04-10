@@ -2,15 +2,11 @@ name: Build image
 
 on:
   push:
-    tags-ignore:
-      - "**"
     paths:
-      - "**.mod"
-      - "**.sum"
-      - "**.go"
+      - "**/*.mod"
+      - "**/*.sum"
+      - "**/*.go"
       - "Dockerfile"
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       should_push:
@@ -26,7 +22,7 @@ jobs:
 
     steps:
       - name: Set SHOULD_PUSH to true # Only when pushing to main, or when enabled upon dispatch
-        if: "(github.event_name == 'push' && contains(github.ref, 'main')) || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push == true)"
+        if: "(github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push == true)"
         run: echo "SHOULD_PUSH=true" >> $GITHUB_ENV
           
       - name: Checkout
