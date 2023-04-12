@@ -3,6 +3,7 @@
   "extends": ["config:base", ":semanticCommits", "schedule:weekly"],
   "automerge": true,
   "automergeType": "branch",
+  "lockFileMaintenance": { "enabled": true },
   "packageRules": [
     {
       "groupName": "dockerfile",
