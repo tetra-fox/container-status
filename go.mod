@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/docker/docker v24.0.7+incompatible
 	github.com/gin-gonic/gin v1.9.1
-	golang.org/x/exp v0.0.0-20231127185646-65229373498e
+	golang.org/x/exp v0.0.0-20231206192017-f3f8817b8deb
 )
 
 require (
