@@ -12,6 +12,8 @@ RUN go build -o ./container-info
 
 FROM scratch
 
+ENV GIN_MODE=release
+
 COPY --from=build /app/container-info /usr/bin/container-info
 
 EXPOSE 8080

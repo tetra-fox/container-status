@@ -9,16 +9,13 @@ You can see a live instance of this [here](https://home.tetra.cool/api), and in 
 ### docker-compose example
 
 ```yaml
-version: "3.7"
-
 services:
   container-info:
-    container_name: status
     image: "ghcr.io/tetra-fox/container-info:latest"
     ports:
       - "3621:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # So we can get information from Docker!
+      - /var/run/docker.sock:/var/run/docker.sock:ro # So we can get information from Docker!
 ```
 
 ### Endpoints
