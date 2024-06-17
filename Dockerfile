@@ -1,17 +1,17 @@
-FROM golang:1.22-alpine
+FROM golang:1.22-alpine AS build
 
 ENV GIN_MODE=release
 
-WORKDIR /app
+COPY go.mod /
+COPY go.sum /
+COPY *.go /
 
-COPY go.mod ./
-COPY go.sum ./
 RUN go mod download
-
-COPY *.go ./
-
 RUN go build -o /container-info
 
-EXPOSE 8080
+FROM alpine:latest
 
-CMD [ "/container-info" ]
+COPY --from=build /container-info /usr/bin/container-info
+
+EXPOSE 8080
+ENTRYPOINT ["/usr/bin/container-info"]
