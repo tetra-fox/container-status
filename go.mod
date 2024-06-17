@@ -3,7 +3,7 @@ module github.com/tetra-fox/container-info
 go 1.20
 
 require (
-	github.com/docker/docker v25.0.5+incompatible
+	github.com/docker/docker v26.1.4+incompatible
 	github.com/gin-gonic/gin v1.10.0
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8
 )
@@ -34,6 +34,7 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/term v0.0.0-20221205130635-1aeaba878587 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
