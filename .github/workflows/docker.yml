@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set SHOULD_PUSH to true # Only when pushing to main, or when enabled upon dispatch
-        if: "(github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push == true)"
+      - name: Enable push to registry # Only when pushing to main, or when enabled upon dispatch
+        if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.should_push == 'true') }}
         run: echo "SHOULD_PUSH=true" >> $GITHUB_ENV
           
       - name: Checkout
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.0.0
@@ -52,7 +52,7 @@ jobs:
         with:
           push: ${{ env.SHOULD_PUSH }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          context: .
+          context: ${{ github.workspace }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

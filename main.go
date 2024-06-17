@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/exp/slices"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/gin-gonic/gin"
 )
@@ -44,7 +44,7 @@ func getContainers() ([]responseContainer, error) {
 		return nil, err
 	}
 
-	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{All: true})
+	containers, err := cli.ContainerList(ctx, container.ListOptions{All: true})
 	if err != nil {
 		return nil, err
 	}
